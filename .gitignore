@@ -1,0 +1,15 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache
+
+# Distribution / packaging
+build/
+dist/
+.eggs/
+*.egg-info/
+
+#PyCharm
+.idea/
+
