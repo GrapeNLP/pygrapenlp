@@ -18,11 +18,3 @@ class GrammarEngine:
                                            TO_FPRTN_AND_TOP_BLACKBOARD_EXTRACT_RTNO_PARSER, True, False, LRB_TREE, STD)
         return self.native_grammar_engine.get_simplified_weighted_output()
 
-
-    def movistarbot_translate(self, sentence):
-        native_sentence = string_to_u_array(sentence)
-        self.native_grammar_engine.process(native_sentence.const_begin(), native_sentence.const_end(),
-                                           TO_FPRTN_AND_TOP_BLACKBOARD_EXTRACT_RTNO_PARSER, True, False, LRB_TREE, STD)
-        native_result = self.native_grammar_engine.get_output_u_array()
-        result = u_array_to_string(native_result)
-        return result
