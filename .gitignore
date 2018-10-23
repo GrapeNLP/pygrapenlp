@@ -13,3 +13,5 @@ dist/
 #PyCharm
 .idea/
 
+#Native libraries
+*.so
