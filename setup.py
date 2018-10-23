@@ -8,7 +8,7 @@ import os
 import os.path
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 MIN_PYTHON_VERSION = (3, 5)
 
@@ -40,6 +40,63 @@ REQUIREMENTS = requirements()
 if sys.version_info < MIN_PYTHON_VERSION:
     sys.exit('**** Sorry, {} {} needs at least Python {}'.format(
         PKGNAME, VERSION, '.'.join(map(str, MIN_PYTHON_VERSION))))
+
+INCLUDES = {
+    'linux': ['/usr/include']
+}
+
+CFLAGS = {
+    'linux': [
+        '-pedantic',
+        '-ansi',
+        '-DSIMPLIFIED_OUTPUT',
+        '-DUNIX',
+#        '-fpermissive',
+        '-DSIMPLIFIED_OUTPUT',
+        '-DSWIG_STD_MODERN_STL',
+        '-DSWIG_EXPORT_ITERATOR_METHODS',
+        '-DDISABLE_TEXT_DICO',
+        '-DDISABLE_LUA_GRAMMAR',
+        '-DDISABLE_LUAW_GRAMMAR',
+        '-DDISABLE_LUT_GRAMMAR',
+        '-DDISABLE_LUX_GRAMMAR',
+        '-DDISABLE_DEPTH_FIRST_PARSER',
+        '-DDISABLE_BREADTH_FIRST_PARSER',
+        '-DDISABLE_EARLEY_PARSER',
+        '-DDISABLE_TO_FPRTN_PARSER',
+        '-DDISABLE_TO_FPRTN_TOP_PARSER',
+        '-DDISABLE_TO_FPRTN_ZPPS_PARSER',
+        '-DDISABLE_TO_FPRTN_PARSER_AND_BREADTH_FIRST_EXPANDER',
+        '-DDISABLE_TO_FPRTN_PARSER_AND_BLACKBOARD_SET_EXPANDER',
+        '-DDISABLE_STD_SES',
+        '-DDISABLE_LRB_TREE_3W_SES',
+        '-DDISABLE_LRB_TREE_BS',
+        '-DDISABLE_LRB_TREE_3W_BS',
+        '-std=gnu++11'
+    ]
+}
+
+LFLAGS = {
+    'linux': ['-L/usr/lib']
+}
+
+LIBRARIES = {
+    'linux': ['grapenlp']
+}
+
+print('*******************')
+print(sys.platform)
+print('*******************')
+platform = sys.platform
+if platform.startswith(('linux', 'gnu')):
+    platform = 'linux'
+elif platform.startswith('freebsd'):
+    platform = 'freebsd'
+
+_includes = INCLUDES[platform]
+_cflags = CFLAGS[platform]
+_lflags = LFLAGS[platform]
+_libraries = LIBRARIES[platform]
 
 setup_args = dict(
     # Metadata
@@ -73,12 +130,16 @@ setup_args = dict(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
 
-    include_package_data=False,  # otherwise package_data is not used
-    package_data={
-        PKGNAME: ['_pygrapenlp.so'],
-    },
-    # unittest requirements
-    test_suite='setup.test_suite',
+    # Native library compilation
+    ext_modules=[Extension('pygrapenlp/_pygrapenlp',
+                           sources=['src/pygrapenlp/pygrapenlpPYTHON_wrap.cxx'],
+                           include_dirs=_includes,
+                           extra_compile_args=_cflags,
+                           extra_link_args=_lflags,
+                           libraries=_libraries
+                           )
+                 ],
+    py_modules=['pygrapenlp/pygrapenlp'],
 
     # More metadata
     keywords=['GrapeNLP', 'grammar engine', 'NLP'],

@@ -1,3 +1,6 @@
+# v2.0.2
+The native library is no longer inside the Python module but compilation is done upon installation of this Python module, provided that the libgrapenlp and libgrapenlp-dev Debian packages are installed. These can be built with the GrapeNLP project.
+
 # v2.0.1
 Removed project dependent method from Python/native interface (the main grapenlp-core method to invoke is "tag" inside Python script grammar_engine.py)
 
