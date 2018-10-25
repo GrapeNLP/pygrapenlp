@@ -4,8 +4,8 @@ from collections import OrderedDict
 
 import pytest
 
-from pygrapenlp import u_out_bound_trie_string_to_string
-from pygrapenlp.grammar_engine import GrammarEngine
+from src.pygrapenlp.grammar_engine import GrammarEngine
+from src.pygrapenlp.u_out_bound_trie import u_out_bound_trie_string_to_string
 
 tag_test_cases = [
     ('', '{}'),

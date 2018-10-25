@@ -1,4 +1,4 @@
-from pygrapenlp import new_byte_array, byte_array_setitem, u_array, byte_array_getitem
+from src.pygrapenlp.pygrape import new_byte_array, byte_array_setitem, u_array, byte_array_getitem
 
 
 def string_to_u_array(s):
@@ -10,6 +10,7 @@ def string_to_u_array(s):
     my_u_array = u_array(byte_count >> 1)
     my_u_array.set_bytes(native_bytes)
     return my_u_array
+
 
 def u_array_to_string(u):
     native_bytes = u.get_bytes()
