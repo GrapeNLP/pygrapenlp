@@ -15,3 +15,6 @@ dist/
 
 #Mac
 .DS_Store
+
+# Grape dependency
+*.so
