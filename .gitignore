@@ -13,3 +13,5 @@ dist/
 #PyCharm
 .idea/
 
+#Mac
+.DS_Store
