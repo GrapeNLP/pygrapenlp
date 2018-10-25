@@ -1,6 +1,6 @@
 import pytest
 
-from src.pygrapenlp.u_array import string_to_u_array, u_array_to_string
+from pygrapenlp.u_array import string_to_u_array, u_array_to_string
 
 encode_string_decode_u_array_test_cases = [
     (''),

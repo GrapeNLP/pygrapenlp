@@ -1,6 +1,6 @@
-from src.pygrapenlp.pygrape import (
+from pygrapenlp.pygrape import (
     ualxiw_manager, LEXMASK_X_WEIGHTED_EXTRACTION_RTNO, TO_FPRTN_AND_TOP_BLACKBOARD_EXTRACT_RTNO_PARSER, LRB_TREE, STD)
-from src.pygrapenlp.u_array import string_to_u_array
+from pygrapenlp.u_array import string_to_u_array
 
 
 class GrammarEngine:

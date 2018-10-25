@@ -93,14 +93,15 @@ LIBRARIES = {
     'darwin': ['grape']
 }
 
-print('*******************')
-print(sys.platform)
-print('*******************')
+SHARE_PATHS = {
+    'linux': '/usr/share',
+    'darwin': '/usr/local/share'
+}
+
+
 platform = sys.platform
-share_path = '/usr/local/share'
 if platform.startswith(('linux', 'gnu')):
     platform = 'linux'
-    share_path = '/usr/share'
 elif platform.startswith('freebsd'):
     platform = 'freebsd'
 
@@ -108,6 +109,7 @@ _includes = INCLUDES[platform]
 _cflags = CFLAGS[platform]
 _lflags = LFLAGS[platform]
 _libraries = LIBRARIES[platform]
+_share_path = SHARE_PATHS[platform]
 
 
 def pkg_version():
@@ -165,7 +167,7 @@ setup_args = dict(
 
     # Include Resources
     ext_modules=[Extension('pygrape/_pygrape',
-                           sources=[share_path + '/pygrapePYTHON_wrap.cxx'],
+                           sources=[_share_path + '/pygrapePYTHON_wrap.cxx'],
                            include_dirs=_includes,
                            extra_compile_args=_cflags,
                            extra_link_args=_lflags,

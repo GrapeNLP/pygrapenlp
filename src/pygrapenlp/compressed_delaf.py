@@ -1,6 +1,6 @@
-from src.pygrapenlp.pygrape import u_read_compressed_delaf, compressed_delaf
-from src.pygrapenlp.u_array import string_to_u_array
-from src.pygrapenlp.u_set_trie import add_u_set_trie_strings_to_string_set
+from pygrapenlp.pygrape import u_read_compressed_delaf, compressed_delaf
+from pygrapenlp.u_array import string_to_u_array
+from pygrapenlp.u_set_trie import add_u_set_trie_strings_to_string_set
 
 
 class CompressedDelaf:

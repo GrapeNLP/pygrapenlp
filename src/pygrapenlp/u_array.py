@@ -1,4 +1,4 @@
-from src.pygrapenlp.pygrape import new_byte_array, byte_array_setitem, u_array, byte_array_getitem
+from pygrapenlp.pygrape import new_byte_array, byte_array_setitem, u_array, byte_array_getitem
 
 
 def string_to_u_array(s):
