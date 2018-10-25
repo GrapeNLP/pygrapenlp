@@ -174,13 +174,6 @@ setup_args = dict(
                  ],
     py_modules=['pygrape/pygrape'],
 
-    # include_package_data=False,  # otherwise package_data is not used
-    # package_data={
-    #     PKGNAME: ['_pygrapenlp.so'],
-    # },
-    # # unittest requirements
-    # test_suite='setup.test_suite',
-
     # More metadata
     keywords=['GrapeNLP', 'grammar engine', 'NLP'],
     classifiers=[
