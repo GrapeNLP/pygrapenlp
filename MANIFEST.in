@@ -1,2 +1,3 @@
 include VERSION.txt
+include DEBIAN_VERSION.txt
 include requirements.txt
