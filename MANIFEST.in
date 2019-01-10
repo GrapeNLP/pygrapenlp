@@ -1,2 +1,6 @@
 include VERSION.txt
 include requirements.txt
+include src/pygrapenlp/pygrapenlpPYTHON_wrap.cxx
+include README.md
+include LICENSE
+include CHANGES
