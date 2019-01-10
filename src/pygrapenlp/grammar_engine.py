@@ -1,6 +1,5 @@
 from pygrapenlp import ualxiw_manager, LEXMASK_X_WEIGHTED_EXTRACTION_RTNO, \
-    TO_FPRTN_AND_TOP_BLACKBOARD_EXTRACT_RTNO_PARSER, LRB_TREE, STD, string_to_u_array, u_array_to_string, \
-    uaui_simple_segment_array_x_weight_array
+    TO_FPRTN_AND_TOP_BLACKBOARD_EXTRACT_RTNO_PARSER, LRB_TREE, STD, string_to_u_array
 
 
 class GrammarEngine:

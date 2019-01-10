@@ -1,4 +1,4 @@
-from pygrapenlp import compressed_delaf, u_read_compressed_delaf, string_to_u_array, u_set_trie_to_string_set, \
+from pygrapenlp import compressed_delaf, u_read_compressed_delaf, string_to_u_array, \
     add_u_set_trie_strings_to_string_set
 
 
