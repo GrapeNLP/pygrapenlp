@@ -1,9 +1,9 @@
 # PYGRAPENLP licensing
 
 These are the license details, copyright notice, and disclaimer for PYGRAPENLP.
-PYGRAPENLP is an open-source Python package that enables the usage the GRAPENLP
-engine for the application of local grammars. For more information on GRAPENLP
-visit https://github.com/GrapeNLP/grape-core.
+PYGRAPENLP is an open-source Python package that enables the usage of GRAPENLP in
+Python code. For more information on GRAPENLP visit
+https://github.com/GrapeNLP/grape-core.
 
 ## Copyright notice
 
