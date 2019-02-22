@@ -1,3 +1,9 @@
+pygrapenlp (2.2.1) stable; urgency=medium
+
+  * Corrected license field in setup.py to be able to publish pygrapenlp in Pypi 
+
+ -- Javier Sastre <javier.sastre@telefonica.net>  Fri, 22 Feb 2019 10:08:11 +0100
+
 pygrapenlp (2.2.0) stable; urgency=medium
 
   * Clean target removes source code files copied from package libgrapenlp-dev

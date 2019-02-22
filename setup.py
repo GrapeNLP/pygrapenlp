@@ -18,8 +18,8 @@ MIN_PYTHON_VERSION = (3, 5)
 PKGNAME = 'pygrapenlp'
 GITHUB_URL = 'https://github.com/GrapeNLP/pygrapenlp.git'
 DESC = '''
-Python package enabling the usage of grape-core from Python; for more information about GrapeNLP please visit
-https://github.com/GrapeNLP/grape-core
+Python package enabling the usage of the grapenlp-core library from Python; for more information about GrapeNLP please
+visit https://github.com/GrapeNLP/grapenlp-core
 '''
 
 
@@ -148,7 +148,6 @@ setup_args = dict(
     version=VERSION,
     description=DESC.split('\n')[0],
     long_description=DESC,
-    license='LGPL v2.1',
     url=GITHUB_URL,
     author='Javier Sastre',
     author_email='javier.sastre@telefonica.net',
@@ -188,7 +187,7 @@ setup_args = dict(
     keywords=['GrapeNLP', 'grammar engine', 'NLP'],
     classifiers=[
         'Programming Language :: Python :: 3 :: Only',
-        'License :: LGPL v2.1',
+        'License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)',
         'Development Status :: 5 - Production/Stable',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
     ],
