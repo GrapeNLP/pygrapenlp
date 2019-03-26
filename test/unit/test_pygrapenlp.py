@@ -8,10 +8,17 @@ from pygrapenlp import u_out_bound_trie_string_to_string
 from pygrapenlp.grammar_engine import GrammarEngine
 
 tag_test_cases = [
-    ('', '{}'),
-    ('unrecognized sentence', '{}'),
-    ('this is a test sentence', '{"label": {"value": "a", "start": 8, "end": 9}}'),
-    ('this is another test sentence', '{"label": {"value": "another", "start": 8, "end": 15}}')
+    ('', {}, '{}'),
+    ('unrecognized sentence', {}, '{}'),
+    ('this is a test sentence', {}, '{"label": {"value": "a", "start": 8, "end": 9}}'),
+    ('this is another test sentence', {}, '{"label": {"value": "another", "start": 8, "end": 15}}'),
+    ('this is a context test sentence', {}, '{}'),
+    ('this is another context test sentence', {}, '{}'),
+    ('this is a context test sentence', {'context': 'false'}, '{}'),
+    ('this is another context test sentence', {'context': 'false'}, '{}'),
+    ('this is a context test sentence', {'context': 'true'}, '{"label": {"value": "a", "start": 8, "end": 9}}'),
+    ('this is another context test sentence', {'context': 'true'},
+     '{"label": {"value": "another", "start": 8, "end": 15}}')
 ]
 
 
@@ -41,9 +48,9 @@ def native_results_to_python_dic(sentence, native_results):
     return top_segments
 
 
-@pytest.mark.parametrize('sentence, expected_json', tag_test_cases)
-def test_tag(sentence, expected_json, grammar_engine):
-    native_results = grammar_engine.tag(sentence)
+@pytest.mark.parametrize('sentence, context, expected_json', tag_test_cases)
+def test_tag(sentence, context, expected_json, grammar_engine):
+    native_results = grammar_engine.tag(sentence, context)
     actual = native_results_to_python_dic(sentence, native_results)
     actual_json = json.dumps(actual)
     assert expected_json == actual_json
