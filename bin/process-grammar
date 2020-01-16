@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Compile/compress Unitex grammar files & DELA dictionaries
+
+if [ $# -ne 2 ]
+then
+    echo "  Compile/compress Unitex grammar files & DELA dictionaries"
+    echo "  Usage: $(basename $0) <grammar-file.grf> <dictionary-file.dic>"
+    exit 1
+fi
+
+# Default directories
+WS=${HOME}/workspace/Unitex-GramLab/Unitex/Spanish
+UNITEX_DIR=${UNITEX_DIR:-${HOME}/Unitex-GramLab-3.1/App}
+
+# Ensure file extension
+GRAMMAR=${1%.grf}.grf
+DICT=${2%.dic}.dic
+
+# If not found, try to look for them in Unitex default workspace
+test -f "$GRAMMAR" || GRAMMAR="${WS}/Graphs/Syntactic/$GRAMMAR"
+test -f "$DICT" || DICT="${WS}/Dela/${DICT}"
+
+test -f "$GRAMMAR" || { echo "Cannot find grammar $1"; exit 1; }
+test -f "$DICT" || { echo "Cannot find dict $2"; exit 1; }
+
+/bin/echo -e "\nProcessing grammar ..."
+${UNITEX_DIR}/Grf2Fst2 "$GRAMMAR"
+
+/bin/echo -e "\nProcessing dictionary ..."
+${UNITEX_DIR}/Compress "$DICT" --v1 -q utf16le-bom

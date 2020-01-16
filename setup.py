@@ -172,9 +172,14 @@ setup_args = dict(
     cmdclass={'build_py': my_build_py,
               'clean': my_clean},
 
+    entry_points={'console_scripts': [
+        'pygrape_extract = pygrapenlp.app.extract:main'
+        'pygrape_extract_raw = pygrapenlp.app.extract_raw:main'
+    ]},
+
     # Native library compilation
     ext_modules=[Extension('pygrapenlp._pygrapenlp',
-                           sources=[_src_pygrapenlp_cxx],
+                           sources=[_swig_src_pygrapenlp_cxx],
                            include_dirs=_includes,
                            extra_compile_args=_cflags,
                            extra_link_args=_lflags,
