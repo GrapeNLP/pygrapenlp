@@ -1,5 +1,9 @@
 """
 Create pygrapenlp as a Python package
+
+Two environment variables modify build behaviour:
+ * GRAPENLP_DEBUG: if 1, a debug version will be compiled (needs GRAPENLP_DIR)
+ * GRAPENLP_DIR: if defined, points to the source folder for grapenlp-core
 """
 
 from __future__ import print_function
@@ -13,7 +17,7 @@ from shutil import copyfile
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_py import build_py
 
-MIN_PYTHON_VERSION = (3, 5)
+MIN_PYTHON_VERSION = (3, 6)
 
 PKGNAME = 'pygrapenlp'
 GITHUB_URL = 'https://github.com/GrapeNLP/pygrapenlp.git'
@@ -44,21 +48,42 @@ if sys.version_info < MIN_PYTHON_VERSION:
     sys.exit('**** Sorry, {} {} needs at least Python {}'.format(
         PKGNAME, VERSION, '.'.join(map(str, MIN_PYTHON_VERSION))))
 
+
+# --------------------------------------------------------------------------
+
+GRAPENLP_DEBUG = os.environ.get('GRAPENLP_DEBUG')
+GRAPENLP_SRC_DIR = os.environ.get('GRAPENLP_DIR')
+
+
+print(". DEBUG mode =", GRAPENLP_DEBUG is not None)
+print(". SOURCE DIR =", GRAPENLP_SRC_DIR)
+
+# --------------------------------------------------------------------------
+
 INCLUDES = {
     'linux': ['/usr/include']
 }
 
+
 CFLAGS = {
     'linux': [
+        '-D_pygrapenlp_EXPORTS',
+        '-pthread',
+        '-DNDEBUG',
+        '-fwrapv',
+        '-fstack-protector-strong',
+        '-Wformat',
+        '-Werror=format-security',
+        '-Wdate-time',
+        '-D_FORTIFY_SOURCE=2',
         '-pedantic',
         '-ansi',
-        '-g0',
         '-DSIMPLIFIED_OUTPUT',
         '-DUNIX',
-        #        '-fpermissive',
-        '-DSIMPLIFIED_OUTPUT',
+        '-fpermissive',
         '-DSWIG_STD_MODERN_STL',
         '-DSWIG_EXPORT_ITERATOR_METHODS',
+
         '-DDISABLE_TEXT_DICO',
         '-DDISABLE_LUA_GRAMMAR',
         '-DDISABLE_LUAW_GRAMMAR',
@@ -77,11 +102,15 @@ CFLAGS = {
         '-DDISABLE_LRB_TREE_BS',
         '-DDISABLE_LRB_TREE_3W_BS',
         '-std=gnu++11'
-    ]
+    ] + (['-g', '-DTRACE'] if GRAPENLP_DEBUG else ['-g0'])
 }
 
+LIBDIR = ('/usr/lib/grapenlp' if not GRAPENLP_SRC_DIR else
+          os.path.join(GRAPENLP_SRC_DIR, 'build', 'debug' if GRAPENLP_DEBUG
+                       else 'release', 'lib'))
+
 LFLAGS = {
-    'linux': ['-L/usr/lib/grapenlp']
+    'linux': ['-L' + LIBDIR]
 }
 
 LIBRARIES = {
@@ -89,8 +118,12 @@ LIBRARIES = {
 }
 
 SWIG_SRC = {
-    'linux': '/usr/src/grapenlp/python'
+    'linux': '/usr/src/grapenlp/python' if not GRAPENLP_SRC_DIR
+             else os.path.join(GRAPENLP_SRC_DIR, 'python')
 }
+
+
+# --------------------------------------------------------------------------
 
 platform = sys.platform
 print("Detected platform: " + platform)
@@ -109,10 +142,14 @@ _swig_src_pygrapenlp_cxx = _swig_src + '/pygrapenlp/pygrapenlpPYTHON_wrap.cxx'
 _src_pygrapenlp_py = 'src/pygrapenlp/pygrapenlp.py'
 _src_pygrapenlp_cxx = 'src/pygrapenlp/pygrapenlpPYTHON_wrap.cxx'
 
+
+# --------------------------------------------------------------------------
+
 def copy_swig_file(src_file, dst_file):
-    if not os.path.exists(dst_file):
-        if not os.path.exists(src_file):
-            sys.exit("ERROR: file " + src_file + " doesn't exist; is libgrapenlp-dev installed?")
+    if not os.path.exists(src_file):
+        sys.exit("ERROR: file " + src_file + " doesn't exist; is libgrapenlp-dev installed?")
+    if not os.path.exists(dst_file) or os.path.getmtime(dst_file) < os.path.getmtime(src_file):
+        print(". Copying file:", src_file)
         copyfile(src_file, dst_file)
 
 
@@ -179,7 +216,7 @@ setup_args = dict(
 
     # Native library compilation
     ext_modules=[Extension('pygrapenlp._pygrapenlp',
-                           sources=[_swig_src_pygrapenlp_cxx],
+                           sources=[_src_pygrapenlp_cxx],
                            include_dirs=_includes,
                            extra_compile_args=_cflags,
                            extra_link_args=_lflags,
