@@ -9,6 +9,8 @@ from .utils.u_array import string_to_u_array
 from .utils.u_context import dico_to_u_context
 
 
+from typing import Dict
+
 
 class GrammarEngine:
     '''
@@ -35,13 +37,19 @@ class GrammarEngine:
         self._build_model(grammar_pathname, bin_delaf_pathname)
 
 
-    def tag(self, sentence, context=None):
+    def tag(self, sentence: str, context: Dict=None):
         '''
         Run the engine & get tags for a sentence
         '''
-        # Prepare data
+        # Check data
         if context is None:
             context = {}
+        elif not isinstance(context, dict):
+            raise Exception("invalid context object: {}".format(type(context)))
+        if not isinstance(sentence, str):
+            raise Exception("invalid utterance object: {}".format(type(sentence)))
+
+        # Convert data
         native_context = dico_to_u_context(context, self.native_grammar_engine.get_context_key_value_hasher())
         native_sentence = string_to_u_array(sentence)
 

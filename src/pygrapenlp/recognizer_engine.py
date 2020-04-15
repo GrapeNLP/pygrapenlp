@@ -50,6 +50,7 @@ def parse_native_results(sentence: str, native_results: NATIVE_RESULT,
         segments = native_results.get_elem_at(r).ssa
         #print("weight =", native_results.get_elem_at(r).w)
 
+        intent = None
         entities = []
         tags = []
         for i in range(0, segments.size()):

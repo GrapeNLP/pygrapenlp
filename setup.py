@@ -14,6 +14,8 @@ import sys
 from distutils.command.clean import clean
 from shutil import copyfile
 
+from typing import List
+
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_py import build_py
 
@@ -27,14 +29,14 @@ visit https://github.com/GrapeNLP/grapenlp-core
 '''
 
 
-def pkg_version():
+def pkg_version() -> str:
     """Read the package version from VERSION.txt"""
     basedir = os.path.dirname(os.path.realpath(__file__))
     with open(os.path.join(basedir, 'VERSION.txt'), 'r') as f:
         return f.readline().strip()
 
 
-def requirements(filename='requirements.txt'):
+def requirements(filename: str='requirements.txt') -> List[str]:
     """Read the requirements file"""
     pathname = os.path.join(os.path.dirname(__file__), filename)
     with io.open(pathname, 'r') as f:
@@ -60,49 +62,66 @@ print(". SOURCE DIR =", GRAPENLP_SRC_DIR)
 
 # --------------------------------------------------------------------------
 
+def include_dirs(basedir: str) -> List[str]:
+    if not basedir:
+        return ['/usr/include']
+    basedir = os.path.join(basedir, 'src')
+    incdir = lambda d: os.path.join(basedir, d, 'include')
+    #print(list(os.listdir(basedir)))
+    return [subdir for subdir in map(incdir, os.listdir(basedir))
+            if os.path.isdir(os.path.join(subdir, 'grapenlp'))]
+
+
 INCLUDES = {
-    'linux': ['/usr/include']
+    'linux': include_dirs(GRAPENLP_SRC_DIR)
 }
 
 
-CFLAGS = {
-    'linux': [
-        '-D_pygrapenlp_EXPORTS',
-        '-pthread',
-        '-DNDEBUG',
-        '-fwrapv',
-        '-fstack-protector-strong',
-        '-Wformat',
-        '-Werror=format-security',
-        '-Wdate-time',
-        '-D_FORTIFY_SOURCE=2',
-        '-pedantic',
-        '-ansi',
-        '-DSIMPLIFIED_OUTPUT',
-        '-DUNIX',
-        '-fpermissive',
-        '-DSWIG_STD_MODERN_STL',
-        '-DSWIG_EXPORT_ITERATOR_METHODS',
+DISABLE_FLAGS = [
+    '-DDISABLE_TEXT_DICO',
+    '-DDISABLE_LUA_GRAMMAR',
+    '-DDISABLE_LUAW_GRAMMAR',
+    '-DDISABLE_LUT_GRAMMAR',
+    '-DDISABLE_LUX_GRAMMAR',
+    '-DDISABLE_DEPTH_FIRST_PARSER',
+    '-DDISABLE_BREADTH_FIRST_PARSER',
+    '-DDISABLE_EARLEY_PARSER',
+    '-DDISABLE_TO_FPRTN_PARSER',
+    '-DDISABLE_TO_FPRTN_TOP_PARSER',
+    '-DDISABLE_TO_FPRTN_ZPPS_PARSER',
+    '-DDISABLE_TO_FPRTN_PARSER_AND_BREADTH_FIRST_EXPANDER',
+    '-DDISABLE_TO_FPRTN_PARSER_AND_BLACKBOARD_SET_EXPANDER',
+    '-DDISABLE_STD_SES',
+    '-DDISABLE_LRB_TREE_3W_SES',
+    '-DDISABLE_LRB_TREE_BS',
+    '-DDISABLE_LRB_TREE_3W_BS'
+]
 
-        '-DDISABLE_TEXT_DICO',
-        '-DDISABLE_LUA_GRAMMAR',
-        '-DDISABLE_LUAW_GRAMMAR',
-        '-DDISABLE_LUT_GRAMMAR',
-        '-DDISABLE_LUX_GRAMMAR',
-        '-DDISABLE_DEPTH_FIRST_PARSER',
-        '-DDISABLE_BREADTH_FIRST_PARSER',
-        '-DDISABLE_EARLEY_PARSER',
-        '-DDISABLE_TO_FPRTN_PARSER',
-        '-DDISABLE_TO_FPRTN_TOP_PARSER',
-        '-DDISABLE_TO_FPRTN_ZPPS_PARSER',
-        '-DDISABLE_TO_FPRTN_PARSER_AND_BREADTH_FIRST_EXPANDER',
-        '-DDISABLE_TO_FPRTN_PARSER_AND_BLACKBOARD_SET_EXPANDER',
-        '-DDISABLE_STD_SES',
-        '-DDISABLE_LRB_TREE_3W_SES',
-        '-DDISABLE_LRB_TREE_BS',
-        '-DDISABLE_LRB_TREE_3W_BS',
-        '-std=gnu++11'
-    ] + (['-g', '-DTRACE'] if GRAPENLP_DEBUG else ['-g0'])
+LINUX_FLAGS = [
+    '-D_pygrapenlp_EXPORTS',
+    '-pthread',
+    '-DNDEBUG',
+    '-fwrapv',
+    '-fstack-protector-strong',
+    '-Wformat',
+    '-Werror=format-security',
+    '-Wdate-time',
+    '-D_FORTIFY_SOURCE=2',
+    '-pedantic',
+    '-ansi',
+    '-DSIMPLIFIED_OUTPUT',
+    '-DUNIX',
+    '-fpermissive',
+    '-DSWIG_STD_MODERN_STL',
+    '-DSWIG_EXPORT_ITERATOR_METHODS',
+    '-std=gnu++11'
+]
+
+if not GRAPENLP_SRC_DIR:
+    LINUX_FLAGS += DISABLE_FLAGS
+
+CFLAGS = {
+    'linux': LINUX_FLAGS + (['-O0', '-g', '-DTRACE'] if GRAPENLP_DEBUG else ['-g0'])
 }
 
 LIBDIR = ('/usr/lib/grapenlp' if not GRAPENLP_SRC_DIR else
@@ -126,7 +145,7 @@ SWIG_SRC = {
 # --------------------------------------------------------------------------
 
 platform = sys.platform
-print("Detected platform: " + platform)
+print(". Detected platform: " + platform)
 if platform.startswith(('linux', 'gnu')):
     platform = 'linux'
 elif platform.startswith('freebsd'):

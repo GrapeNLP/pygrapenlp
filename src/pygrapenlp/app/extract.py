@@ -27,15 +27,22 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Test grapeNLP resolution')
 
     parser.add_argument('--quiet', '-q', action='store_true')
-    parser.add_argument('--raw-output', '--raw', action='store_true')
     parser.add_argument('--reraise', action='store_true', help='raise on errors')
 
-    parser.add_argument('--grammar', metavar='FST2-FILENAME')
-    parser.add_argument('--dictionary', metavar='COMPRESSED-DELAF-FILENAME')
+    g = parser.add_argument_group('Processing options')
+    g.add_argument('--raw-output', '--raw', action='store_true')
+    g.add_argument('--keep-empty', action='store_false',
+               help='Keep empty entities')
+    g.add_argument('--add-role', action='store_true',
+                   help='Add role field (if defined)')
 
-    parser.add_argument('--context', nargs='+', metavar='KEY=VALUE')
+    g2 = parser.add_argument_group('Model')
+    g2.add_argument('--grammar', metavar='FST2-FILENAME')
+    g2.add_argument('--dictionary', metavar='COMPRESSED-DELAF-FILENAME')
 
-    g = parser.add_mutually_exclusive_group(required=True)
+    g3 = parser.add_argument_group('Input')
+    g3.add_argument('--context', nargs='+', metavar='KEY=VALUE')
+    g = g3.add_mutually_exclusive_group(required=True)
     g.add_argument('--utterance', nargs='+', help='utterances to parse')
     g.add_argument('--dict-words', nargs='+', help='dictionary words to look up')
 
@@ -66,7 +73,9 @@ def process(args: SimpleNamespace):
 
     # Parse an utterance
     print(". Create engine")
-    engine = RecognizerGrammarEngine(args.grammar, args.dictionary)
+    engine = RecognizerGrammarEngine(args.grammar, args.dictionary,
+                                     skip_empty_entities=args.keep_empty,
+                                     add_role=args.add_role)
     print(". engine created")
 
     if not args.context:

@@ -1,5 +1,7 @@
 pygrapenlp (2.3.1.2)
   * setup modified to allow creating a debug version of the library
+  * new processing arguments (add-role, keep-empty) and corresponding
+    command-line options
 
 pygrapenlp (2.3.1.1)
   * Some file reorganization
