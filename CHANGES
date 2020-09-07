@@ -1,3 +1,16 @@
+pygrapenlp (2.3.1.2)
+  * setup modified to allow creating a debug version of the library
+  * new processing arguments (add-role, keep-empty) and corresponding
+    command-line options
+
+pygrapenlp (2.3.1.1)
+  * Some file reorganization
+  * Wrapper class for RecognizerGrammar
+     - using special prefixes in symbols for intent & entities
+     - role discrimination through suffix in symbols
+     - remove empty entities
+  * Command-line scripts
+
 pygrapenlp (2.3.1) stable; urgency=medium
 
   * Increased version number to be able to upload package to Pypi

@@ -19,3 +19,7 @@ src/pygrapenlp/pygrapenlpPYTHON_wrap.cxx
 
 #Native libraries (these are automatically compiled upon installation of this Python package)
 *.so
+
+*~
+
+/*.dot
