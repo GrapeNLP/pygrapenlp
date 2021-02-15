@@ -1,3 +1,10 @@
+pygrapenlp (2.4.0) stable; urgency=medium
+
+  * Added compatibility with MacOS
+  * Tests can be run in the commad line with pytest
+
+ -- Javier Sastre <javier.sastre@gmail.com>  Mon, 15 Mar 2021 10:07:43 +0000
+
 pygrapenlp (2.3.1) stable; urgency=medium
 
   * Increased version number to be able to upload package to Pypi

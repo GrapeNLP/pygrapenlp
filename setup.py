@@ -51,8 +51,6 @@ INCLUDES = {
 
 CFLAGS = {
     'darwin': [
-        '-pedantic',
-        '-ansi',
         '-g0',
         '-DSIMPLIFIED_OUTPUT',
         '-DUNIX',
@@ -80,8 +78,6 @@ CFLAGS = {
         '-std=gnu++11'
     ],
     'linux': [
-        '-pedantic',
-        '-ansi',
         '-g0',
         '-DSIMPLIFIED_OUTPUT',
         '-DUNIX',
@@ -183,7 +179,7 @@ setup_args = dict(
     long_description=DESC,
     url=GITHUB_URL,
     author='Javier Sastre',
-    author_email='javier.sastre@telefonica.net',
+    author_email='javier.sastre@gmail.com',
 
     # Locate packages
     packages=find_packages('src'),
