@@ -45,13 +45,39 @@ if sys.version_info < MIN_PYTHON_VERSION:
         PKGNAME, VERSION, '.'.join(map(str, MIN_PYTHON_VERSION))))
 
 INCLUDES = {
+    'darwin': ['/usr/local/include'],
     'linux': ['/usr/include']
 }
 
 CFLAGS = {
+    'darwin': [
+        '-g0',
+        '-DSIMPLIFIED_OUTPUT',
+        '-DUNIX',
+        #        '-fpermissive',
+        '-DSIMPLIFIED_OUTPUT',
+        '-DSWIG_STD_MODERN_STL',
+        '-DSWIG_EXPORT_ITERATOR_METHODS',
+        '-DDISABLE_TEXT_DICO',
+        '-DDISABLE_LUA_GRAMMAR',
+        '-DDISABLE_LUAW_GRAMMAR',
+        '-DDISABLE_LUT_GRAMMAR',
+        '-DDISABLE_LUX_GRAMMAR',
+        '-DDISABLE_DEPTH_FIRST_PARSER',
+        '-DDISABLE_BREADTH_FIRST_PARSER',
+        '-DDISABLE_EARLEY_PARSER',
+        '-DDISABLE_TO_FPRTN_PARSER',
+        '-DDISABLE_TO_FPRTN_TOP_PARSER',
+        '-DDISABLE_TO_FPRTN_ZPPS_PARSER',
+        '-DDISABLE_TO_FPRTN_PARSER_AND_BREADTH_FIRST_EXPANDER',
+        '-DDISABLE_TO_FPRTN_PARSER_AND_BLACKBOARD_SET_EXPANDER',
+        '-DDISABLE_STD_SES',
+        '-DDISABLE_LRB_TREE_3W_SES',
+        '-DDISABLE_LRB_TREE_BS',
+        '-DDISABLE_LRB_TREE_3W_BS',
+        '-std=gnu++11'
+    ],
     'linux': [
-        '-pedantic',
-        '-ansi',
         '-g0',
         '-DSIMPLIFIED_OUTPUT',
         '-DUNIX',
@@ -81,14 +107,17 @@ CFLAGS = {
 }
 
 LFLAGS = {
+    'darwin': ['-L/usr/local/lib/grapenlp'],
     'linux': ['-L/usr/lib/grapenlp']
 }
 
 LIBRARIES = {
+    'darwin': ['grapenlp'],
     'linux': ['grapenlp']
 }
 
 SWIG_SRC = {
+    'darwin': '/usr/local/src/grapenlp/python',
     'linux': '/usr/src/grapenlp/python'
 }
 
@@ -150,7 +179,7 @@ setup_args = dict(
     long_description=DESC,
     url=GITHUB_URL,
     author='Javier Sastre',
-    author_email='javier.sastre@telefonica.net',
+    author_email='javier.sastre@gmail.com',
 
     # Locate packages
     packages=find_packages('src'),
